@@ -3,7 +3,7 @@
 require 'startup.php';
 
 $uniqid = uniqid();
-App::log("UNIQUE_ID: {$uniqid}");
+logfy("UNIQUE_ID: {$uniqid}");
 Cookie::set(Cookie::UNIQUE_ID, $uniqid);
 $allDensities = [18, 24, 36, 48, 72, 96, 128, 176, 224, 256, 384, 512];
 
@@ -90,5 +90,6 @@ $sufixAttr .= !$haveMany &&(!empty($_GET["removesufix"]) || @$_GET["removesufix"
             <div class="col-md-2"></div>
         </div>
     </div>
+    <style>#forkongithub a{background:#000;color:#fff;text-decoration:none;font-family:arial,sans-serif;text-align:center;font-weight:bold;padding:5px 40px;font-size:1rem;line-height:2rem;position:relative;transition:0.5s;}#forkongithub a:hover{background:#c11;color:#fff;}#forkongithub a::before,#forkongithub a::after{content:"";width:100%;display:block;position:absolute;top:1px;left:0;height:1px;background:#fff;}#forkongithub a::after{bottom:1px;top:auto;}@media screen and (min-width:1024px){#forkongithub{position:fixed;display:block;top:0;right:0;width:200px;overflow:hidden;height:200px;z-index:9999;}#forkongithub a{width:200px;position:absolute;top:40px;right:-40px;transform:rotate(45deg);-webkit-transform:rotate(45deg);-ms-transform:rotate(45deg);-moz-transform:rotate(45deg);-o-transform:rotate(45deg);box-shadow:4px 4px 10px rgba(0,0,0,0.8);}}</style><span id="forkongithub"><a href="https://github.com/waister/android-icon-generator">Fork me on GitHub</a></span>
 </body>
 </html>

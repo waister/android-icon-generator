@@ -1,2 +1,2 @@
-# android-icon-generator
+# Android Icons Generator
 Icon generator for android using PHP.
