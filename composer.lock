@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "c05eb3893d08c0b0e8410120fb854771",
+    "content-hash": "155ae5acddd2b2e0dde58940e79945b6",
     "packages": [
         {
             "name": "enyo/dropzone",

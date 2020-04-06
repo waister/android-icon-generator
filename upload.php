@@ -5,27 +5,27 @@ require 'startup.php';
 use WideImage\WideImage;
 
 
-clearUploads();
+App::clearFolder(UPLOADS_PATH);
 
-$outputFolder = outputPath();
-$outputGenerated = generatedPath();
+$outputFolder = App::outputPath();
+$outputGenerated = App::generatedPath();
 
 $inputFile = $outputFolder . basename($_FILES["file"]["name"]);
 
 if (!file_exists($outputFolder)) {
-    @mkdir($outputFolder);
+    @mkdir($outputFolder, 0777, true);
 
-    logfy("Output folder created: " . $outputFolder);
+    App::log("Output folder created: " . $outputFolder);
 }
 
 if (move_uploaded_file($_FILES["file"]["tmp_name"], $inputFile)) {
-    logfy("File sent to: " . $outputFolder);
+    App::log("Arquivo enviado para: " . $outputFolder);
 
     $getFolter = !empty(@$_GET['folder']) ? @$_GET['folder'] : "drawable";
-    logfy("getFolter: " . $getFolter);
+    App::log("getFolter: " . $getFolter);
 
     $removesufix = !empty(@$_GET["removesufix"]) || @$_GET["removesufix"] == "1" ? true : false;
-    logfy("removesufix: " . $removesufix);
+    App::log("removesufix: " . $removesufix);
 
     $densities = $_GET["densities"];
 
@@ -48,29 +48,31 @@ if (move_uploaded_file($_FILES["file"]["tmp_name"], $inputFile)) {
         }
     }
 
+    // Generate the folders
     foreach ($densitiesFilter as $density) {
         foreach ($proportions as $folder => $proportion) {
             if (!file_exists($outputGenerated)) {
-                @mkdir($outputGenerated);
+                @mkdir($outputGenerated, 0777, true);
             }
 
             $subfolder = $outputGenerated . $getFolter . "-" . $folder;
  
             if (!file_exists($subfolder) || !is_dir($subfolder)) {
-                @mkdir($subfolder);
+                @mkdir($subfolder, 0777, true);
             }
         }
     }
 
-    logfy("densities", $densities);
-    logfy("densitiesFilter", $densitiesFilter);
+    App::log("densities", $densities);
+    App::log("densitiesFilter", $densitiesFilter);
 
+    // Generate the resized files
     foreach ($densitiesFilter as $density) {
-        logfy("density: " . $density);
+        App::log("density: " . $density);
 
         foreach ($proportions as $folder => $proportion) {
             $subfolder = $outputGenerated . $getFolter . "-" . $folder;
-            logfy("subfolder: " . $subfolder);
+            App::log("subfolder: " . $subfolder);
 
             $resizeWidth = $density * $proportion;
             $extesion = pathinfo($inputFile, PATHINFO_EXTENSION);
@@ -86,17 +88,17 @@ if (move_uploaded_file($_FILES["file"]["tmp_name"], $inputFile)) {
                 $ratio = $imagesize[0] / $imagesize[1];
                 $resizeHeight= $resizeWidth / $ratio;
 
-                logfy("extesion: " . $extesion);
+                App::log("extesion: " . $extesion);
                 $quality = $extesion == 'png' ? 9 : 85;
-                logfy("quality: " . $quality);
+                App::log("quality: " . $quality);
 
                 $result = WideImage::load($inputFile)->resize($resizeWidth, $resizeHeight)->saveToFile($output, $quality);
-                logfy("WideImage result: $result");
+                App::log("WideImage result: $result");
             } else {
                 $status .= "SKIPPED ";
             }
 
-            logfy($status . ' | Density: "' . $density . 'dp" | Folder: "' . $getFolter . '-' . $folder . '" | Output: "' . $output . '"');
+            App::log($status . ' | Density: "' . $density . 'dp" | Folder: "' . $getFolter . '-' . $folder . '" | Output: "' . $output . '"');
         }
     }
 
@@ -104,6 +106,6 @@ if (move_uploaded_file($_FILES["file"]["tmp_name"], $inputFile)) {
 
     @unlink($outputFolder);
 
-    logfy("Possible file upload attack!");
+    App::log("Possível ataque de upload de arquivo!");
 
 }
