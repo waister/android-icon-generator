@@ -1,6 +1,6 @@
 {
     "require": {
-        "twbs/bootstrap": "3.3.7",
+        "twbs/bootstrap": "3.4.1",
         "enyo/dropzone": "5.5.0",
         "smottt/wideimage": "1.1.3"
     }
